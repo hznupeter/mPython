@@ -42,6 +42,4 @@
 //I2S built-in ADC channel
 #define I2S_ADC_CHANNEL ADC1_CHANNEL_0
 
-extern const mp_obj_type_t player_type;
-
 #endif // MICROPY_INCLUDED_ESP32_MODEXTBOARD_H

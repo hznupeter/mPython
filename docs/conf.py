@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'mPython掌控'
-copyright = u'2018, labplus'
+copyright = u'2019, labplus'
 author = u'tangliufeng'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -64,7 +64,7 @@ author = u'tangliufeng'
 # built documents.
 #
 # The short X.Y version.
-version = release = '1.0'
+version = release = '1.0.6'
 # The full version, including alpha/beta/rc tags.
 
 
@@ -182,7 +182,7 @@ html_additional_pages = {}
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True

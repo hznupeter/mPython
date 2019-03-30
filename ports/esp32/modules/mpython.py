@@ -543,7 +543,7 @@ class wifi:
         self.sta.active(False)
         print('disconnect WiFi...')
 
-    def enable_APWiFi(self,essid,channel):
+    def enable_APWiFi(self,essid,channel=10):
         self.ap.active(True)
         self.ap.config(essid=essid,channel=channel)
 
@@ -552,17 +552,17 @@ class wifi:
         print('disable AP WiFi...')
 
 # display
-oled = OLED()
-display = oled
+if 60 in i2c.scan():
+    oled = OLED()
+    display = oled
 
 # 3 axis accelerometer
 accelerometer = Accelerometer()
 
 # bm280
-try:
+if 119 in i2c.scan():
     bme280=BME280()
-except:
-    pass
+
 
 # 3 rgb leds
 rgb = NeoPixel(Pin(17, Pin.OUT), 3, 3, 1)

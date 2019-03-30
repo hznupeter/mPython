@@ -41,6 +41,7 @@
 
 unsigned long music_data_index;
 extern double volume;
+<<<<<<< HEAD
 static mp3_decode_t *decoder = NULL;
 
 mp3_decode_t *get_mp3_decode_handle(void)
@@ -81,6 +82,28 @@ mp3_decode_t *mp3_decode_init()
     }
     return decoder;
 }
+=======
+extern int player_status;
+
+/* default MAD buffer format */
+pcm_format_t mad_buffer_fmt = {
+    .sample_rate = 44100,
+    .bit_depth = I2S_BITS_PER_SAMPLE_16BIT,
+    .num_channels = 2,
+    .buffer_format = PCM_LEFT_RIGHT
+};
+
+typedef struct{
+    HMP3Decoder HMP3Decoder;
+    MP3FrameInfo mp3FrameInfo;
+    int samplerate;
+    short *output;
+    unsigned char *readBuf;
+    int supply_bytes;
+    int bytesleft;
+    unsigned char *readPtr;
+}mp3_decode_t;
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 
 static int read_ringbuf(mp3_decode_t *decoder)
 {
@@ -202,6 +225,35 @@ static void mp3_decode(mp3_decode_t *decoder)
 void mp3_decoder_task(void *pvParameters)
 {
     player_t *player = pvParameters;
+<<<<<<< HEAD
+=======
+    mp3_decode_t *decoder;
+
+    // ESP_LOGE(TAG, "Enter mp3 decode task.");
+    decoder = calloc(1, sizeof(mp3_decode_t));
+    if(decoder == NULL)
+        goto abort;
+    decoder->readBuf = malloc(MAINBUF_SIZE1);
+    if (decoder->readBuf == NULL){
+        ESP_LOGE(TAG, "readBuf malloc failed");
+        goto abort;
+    }
+    decoder->output = malloc(1153 * 4);
+    if (decoder->output == NULL){
+        free(decoder->readBuf);
+        ESP_LOGE(TAG, "OutBuf malloc failed");
+		goto abort;
+    }
+    decoder->HMP3Decoder = MP3InitDecoder();
+    if (decoder->HMP3Decoder == 0)
+    {
+        free(decoder->readBuf);
+        free(decoder->output);
+        mp_raise_ValueError("Memory not enough for mp3 decode");
+        // ESP_LOGE(TAG, "Memory not enough for mp3 decode.");
+		goto abort;
+    }
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 
     decoder->supply_bytes = MAINBUF_SIZE1;
     decoder->bytesleft = 0;
@@ -218,7 +270,11 @@ void mp3_decoder_task(void *pvParameters)
 
         mp3_decode(decoder);
         
+<<<<<<< HEAD
         if((player->media_stream.eof) && (state == 1) && (decoder->bytesleft == 0))
+=======
+        if((player->player_status == STOPPED) || ((player->media_stream.eof) && (state == 1) && (decoder->bytesleft == 0)))
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
             break;
         else if(player->player_status == PAUSED){
             vTaskSuspend( NULL );
@@ -226,6 +282,7 @@ void mp3_decoder_task(void *pvParameters)
     } 
 
     //vTaskDelay(10 / portTICK_PERIOD_MS);
+<<<<<<< HEAD
     // free(decoder->readBuf);
     // free(decoder->output);
     // MP3FreeDecoder(decoder->HMP3Decoder);
@@ -235,6 +292,17 @@ void mp3_decoder_task(void *pvParameters)
     renderer_zero_dma_buffer();
     //audio_player_destroy();
     player->player_status = INITIALIZED;
+=======
+    free(decoder->readBuf);
+    free(decoder->output);
+    MP3FreeDecoder(decoder->HMP3Decoder);
+    free(decoder);
+
+    abort:
+    renderer_zero_dma_buffer();
+    audio_player_destroy();
+    player_status = 1;
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 
     // ESP_LOGE(TAG, "helix decoder stack: %d\n", uxTaskGetStackHighWaterMark(NULL));
     ESP_LOGE(TAG, "6. mp3 decode task will delete, RAM left: %d", esp_get_free_heap_size()); 

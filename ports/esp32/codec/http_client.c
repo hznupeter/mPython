@@ -28,6 +28,7 @@
 static const char *TAG = "HTTP_CLIENT";
 static int http_err;
 extern int player_status;
+<<<<<<< HEAD
 HTTP_HEAD_VAL http_head[6];
 
 /* Root cert for howsmyssl.com, taken from howsmyssl_com_root_cert.pem
@@ -36,6 +37,19 @@ HTTP_HEAD_VAL http_head[6];
    The CA root cert is the last cert given in the chain of certs.
    To embed it in the app binary, the PEM file is named
    in the component.mk COMPONENT_EMBED_TXTFILES variable. */
+=======
+
+/* Root cert for howsmyssl.com, taken from howsmyssl_com_root_cert.pem
+
+   The PEM file was extracted from the output of this command:
+   openssl s_client -showcerts -connect www.howsmyssl.com:443 </dev/null
+
+   The CA root cert is the last cert given in the chain of certs.
+
+   To embed it in the app binary, the PEM file is named
+   in the component.mk COMPONENT_EMBED_TXTFILES variable.
+*/
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 const char *cert_pem = "-----BEGIN CERTIFICATE----- \
 MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc2oLheynCDANBgkqhkiG9w0BAQsFADA/ \
 MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT \
@@ -62,7 +76,11 @@ wApIvJSwtmVi4MFU5aMqrSDE6ea73Mj2tcMyo5jMd6jmeWUHK8so/joWUoHOUgwu \
 X4Po1QYz+3dszkDqMp4fklxBwXRsW10KXzPMTZ+sOPAveyxindmjkW8lGy+QsRlG \
 PfZ+G6Z6h7mjem0Y+iWlkYcV4PIWL1iwBi8saCbGS5jN2p8M+X+Q7UNKEkROb3N6 \
 KOqkqm57TH2H3eDJAkSnh6/DNFu0Qg== \
+<<<<<<< HEAD
 -----END CERTIFICATE-----"; 
+=======
+-----END CERTIFICATE-----";
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 
 static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -90,7 +108,11 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
                 else if (strcmp(evt->header_value, "audio/mpeg") == 0) player->media_stream.content_type = AUDIO_MPEG;
                 else if (strcmp(evt->header_value, "text/plain") == 0) player->media_stream.content_type = AUDIO_TEXT;
                 else player->media_stream.content_type = MIME_UNKNOWN;
+<<<<<<< HEAD
                 ESP_LOGE(TAG, "media type: %x", player->media_stream.content_type);
+=======
+                // ESP_LOGE(TAG, "media type: %x", player->media_stream.content_type);
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
             }
             break;
         case HTTP_EVENT_ON_DATA:
@@ -124,7 +146,10 @@ static int http_request(esp_http_client_handle_t client, int *content_length)
     if(player->http_head != NULL){
         for(int i = 0; i < 6; i++)
             esp_http_client_set_header(client, player->http_head[i].key, player->http_head[i].value);
+<<<<<<< HEAD
         free((char *)http_head[3].value);
+=======
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
     }
 
     if ((err = esp_http_client_open(client, player->http_body_len)) != ESP_OK) {
@@ -299,9 +324,15 @@ void http_request_task(void *pvParameters)
     create_decode_task(player);
 
     // ESP_LOGE(TAG, "3.1. http request run, RAM left: %d, total_read_len = %d", esp_get_free_heap_size(), total_read_len);
+<<<<<<< HEAD
     /* 3种情况退出循环：1 长时间取不到数据 2 数据读完 3 收到停止指令 */ 
     while(total_read_len < content_length) 
     { 
+=======
+    /* 3种情况退出循环：1 长时间取不到数据 2 数据读完 3 收到指令 */ 
+    while(total_read_len < content_length) 
+    {  
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
         if(player->player_status == RUNNING){
             if(http_get_data(client, &total_read_len, content_length) == -1){
                 player->player_status = STOPPED;
@@ -314,10 +345,21 @@ void http_request_task(void *pvParameters)
         else if(player->player_status == PAUSED)
             vTaskSuspend( NULL );
     }
+<<<<<<< HEAD
     
     //ESP_LOGE(TAG, "total_read_len = %d", total_read_len);
     abort:
     player->media_stream.eof = true; //指示音频数据结束
+=======
+
+    //ESP_LOGE(TAG, "total_read_len = %d", total_read_len);
+    abort:
+    if(http_err == -1){
+        audio_player_destroy();
+        player_status = 1;
+    }
+    player->media_stream.eof = true;
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
     // ESP_LOGE(TAG, "HTTP Stream reader Status = %d, content_length = %d total_readlen = %d",
     //                 esp_http_client_get_status_code(client),
     //                 esp_http_client_get_content_length(client), total_read_len);

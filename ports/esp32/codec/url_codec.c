@@ -109,4 +109,8 @@ int main(int argc, char *argv[])
     printf("%s\n", buf);
  
     return 0;
+<<<<<<< HEAD
 } */
+=======
+} */
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64

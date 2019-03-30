@@ -31,9 +31,29 @@ TaskHandle_t mp3_decode_task_handel;
 TaskHandle_t http_client_task_handel;
 static player_t *player_instance = NULL;
 double volume;
+<<<<<<< HEAD
 
 void audio_player_begin(void)
 { 
+=======
+int player_status;
+
+void audio_player_init(player_t *player, renderer_config_t *renderer)
+{ 
+    /* 1 创建一个播放器对象并初始化 */
+    player_instance = player;
+    // player_instance->ringbuf_eventGroup = xEventGroupCreate();
+    // ESP_LOGE(TAG, "1. Create player, RAM left 1 %d", esp_get_free_heap_size());
+
+    /* 2. 创建rendder对象并初始化（完成i2s dac初始化） */
+    renderer_init(renderer); //I2S参数配置
+    // ESP_LOGE(TAG, "2. Create renderer, RAM left: %d", esp_get_free_heap_size());
+
+    /* 3. 创建ring buffer对象） */
+    player_instance->buf_handle = xRingbufferCreate(RINGBUF_SIZE, RINGBUF_TYPE_BYTEBUF);
+    // ESP_LOGE(TAG, "3. Create ringbuf, RAM left: %d", esp_get_free_heap_size());
+    
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
     /* 4. 创建播放任务，网络或本地 获取音频数据，数据写入ringbuf*/
     if(strstr(player_instance->url, "http") != NULL){   //web play
         xTaskCreate(http_request_task, "http_request_task", 3072, player_instance, ESP_TASK_PRIO_MIN + 1, &http_client_task_handel );
@@ -49,7 +69,10 @@ void audio_player_begin(void)
 
 void create_decode_task(player_t *player)
 {
+<<<<<<< HEAD
     mp3_decode_t *mp3_handle;
+=======
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
     switch(player->media_stream.content_type){ //创建不同的解码任务
         case OCTET_STREAM:
 
@@ -61,10 +84,13 @@ void create_decode_task(player_t *player)
 
         break;
         case AUDIO_MPEG:
+<<<<<<< HEAD
             if( get_mp3_decode_handle() == NULL){
                 mp3_handle =  mp3_decode_init();
                 set_mp3_decode_handle(mp3_handle);
             }
+=======
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
             xTaskCreate(mp3_decoder_task, "mp3_decoder_task", HELIX_DECODER_TASK_STACK_DEPTH, player, ESP_TASK_PRIO_MIN + 1, &mp3_decode_task_handel );
             ESP_LOGE(TAG, "4. mp3 decoder task builded, RAM left: %d", esp_get_free_heap_size()); 
         break;
@@ -87,11 +113,14 @@ void audio_player_destroy()
     // ESP_LOGE(TAG, "RAM left %d", esp_get_free_heap_size());
 }
 
+<<<<<<< HEAD
 void init_palyer_handle(player_t *Player)
 {
     player_instance = Player;
 }
 
+=======
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 player_t *get_player_handle()
 {
     return player_instance;

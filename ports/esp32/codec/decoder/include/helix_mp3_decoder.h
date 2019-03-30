@@ -8,6 +8,7 @@
 #define __helix_mp3_decoder_h__
 
 #define HELIX_DECODER_TASK_STACK_DEPTH 3200
+<<<<<<< HEAD
 #include "mp3dec.h"
 
 typedef struct{
@@ -24,6 +25,9 @@ typedef struct{
 mp3_decode_t *get_mp3_decode_handle(void);
 void set_mp3_decode_handle(mp3_decode_t *Decoder);
 mp3_decode_t *mp3_decode_init();
+=======
+
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 int mp3_file_data_proccess(const char *buf, size_t len);
 void mp3_decoder_task(void *pvParameters);
 

@@ -104,10 +104,16 @@ typedef struct {
 } web_radio_t;
 
 player_status_t get_player_status();
+<<<<<<< HEAD
 void init_palyer_handle(player_t *Player);
 player_t *get_player_handle();
 
 void audio_player_begin(void);
+=======
+player_t *get_player_handle();
+
+void audio_player_init(player_t *player, renderer_config_t *renderer);
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 void audio_player_start();
 void audio_player_stop();
 void audio_player_pause();

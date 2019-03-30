@@ -31,6 +31,10 @@
 #define BODY_READ_LEN 64
 static const char *TAG = "LOCAL_FILE";
 static int err;
+<<<<<<< HEAD
+=======
+extern int player_status;
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
 
 mp_obj_t local_open(const char *filename)
 {
@@ -183,6 +187,10 @@ void local_file_read(player_t *player)
         if(player->player_status == RUNNING)
         {
             if(data_read(file, buffer) == -1){  //往ringbuf填数据
+<<<<<<< HEAD
+=======
+                player->media_stream.eof = true;
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
                 // ESP_LOGE(TAG, "File read end.");
                 break;
             }
@@ -196,7 +204,15 @@ void local_file_read(player_t *player)
     }
 
     abort:
+<<<<<<< HEAD
     player->media_stream.eof = true;
+=======
+    if(err == -1)
+    {
+        audio_player_destroy();
+        player_status = 1;
+    }
+>>>>>>> d23120ffa35599fc6f65a3ba5bfe2c81282bff64
     ESP_LOGE(TAG, "local_file_read task stack: %d\n", uxTaskGetStackHighWaterMark(NULL));
     // ESP_LOGE(TAG, "5. local file read task will delete, RAM left: %d", esp_get_free_heap_size());
     vTaskDelay(1 / portTICK_PERIOD_MS); 

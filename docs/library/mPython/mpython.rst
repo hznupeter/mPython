@@ -5,7 +5,7 @@
 mpython 模块
 ==========================
 
-mpython是基于掌控板封装的专用库
+:ref:`mpython<mpython_code>` 是基于掌控板封装的专用库.
 
 延时
 -------
@@ -111,23 +111,7 @@ BME280是一款集成温度、湿度、气压，三位一体的环境传感器�
 蜂鸣器
 -------
 
-通过buzz对象,驱动板载无源蜂鸣器。
-
-.. method:: buzz.on(freq=500)
-
-以设定的频率打开无源蜂鸣器，默认为500Hz
-
-- ``freq`` -默认500Hz，0 < freq ≤ 78125
-
-.. method:: buzz.freq(freq)
-
-切换蜂鸣器频率
-
-- ``freq`` -0 < freq ≤ 78125
-
-.. method:: buzz.off()
-
-停止驱动无源蜂鸣器
+由 ``music`` 模块驱动掌控板蜂鸣器,具体操作详见 :mod:`music` 模块。
 
 
 button_[a,b]对象
@@ -243,12 +227,18 @@ oled对象为framebuf的衍生类，继承framebuf的方法。更多的使用方
 
 翻转像素点。当n=1时,未填充像素点点亮,填充像素点灭。当n=0时,则反。默认启动是填充像素点点亮。
 
-.. method:: oled.DispChar(s, x, y)
+.. method:: oled.DispChar(s, x, y,mode=TextMode.normal)
 
 oled屏显示文本。
 
     - ``s`` -需要显示的文本。
     - ``x`` 、``y`` -文本的左上角作为起点坐标。
+    - ``mode`` - 设置文本模式,默认为TextMode.normal
+
+        - ``TextMode.normal`` - 等于1 。普通模式,文本显示白色,背景为黑色。
+        - ``TextMode.rev`` - 等于2 。反转模式,文本显示黑色,背景为白色。
+        - ``TextMode.trans`` - 等于3 。透明模式,透明文本意味着文本被写在显示中已经可见的内容之上。不同之处在于，以前屏幕上的内容仍然可以看到，而对于normal，背景将被当前选择的背景颜色所替代。
+        - ``TextMode.xor`` - 等于4 。XOR模式,如果背景是黑色的，效果与默认模式(normal模式)相同。如果背景为白色，则反转文本。
 
 .. method:: oled.show()
 
@@ -324,6 +314,14 @@ oled屏显示文本。
     - ``r`` -圆弧角半径
     - ``c`` -为1时,像素点亮；``c`` 为0时,像素点灭。
 
+i2c对象
+-------
+
+mPython掌控板已实例 ``I2C`` 类，P19、P20 为I2C的SCL、SDA引脚。I2C设备可连接掌控板I2C总线进行操作。
+
+
+详细有关I2C的读写操作，请查看 :ref:`machine.I2C<machine.I2C>` 模块或 :ref:`I2C基础教程<tutorials_i2c>` 章节。
+
 MPythonPin类
 -------
 
@@ -394,140 +392,6 @@ IO引脚输出电平控制。``value`` =1时输出高电平， ``value`` =0时�
        这些值可以一起进行 ``OR`` 运算以触发多个事件。
 
 
-Servo类
--------
-
-.. class:: Servo(pin, min_us=750, max_us=2250, actuation_range=180)
-
-构建Servo对象,默认使用SG90舵机。不同舵机脉冲宽度参数和角度范围会有所不一样,根据舵机型号自行设置。
-
-.. Hint:: 
-
-    作为Servo控制引脚须为支持PWM(模拟输出)的引脚。掌控板支持PWM的引脚,详情可查阅 :ref:`掌控板接口引脚说明<mPythonPindesc>` 。
-
-.. Attention:: 
-
-    * 你可以设置 ``actuation_range`` 来对应用给定的 ``min_us`` 和 ``max_us`` 观察到的实际运动范围值。
-    * 您也可以将脉冲宽度扩展到这些限制之上和之下伺服机构可能会停止，嗡嗡声，并在停止时吸收额外的电流。仔细测试，找出安全的最小值和最大值。
-
-- ``pin`` -舵机PWM控制信号引脚
-- ``min_us`` -舵机PWM信号脉宽最小宽度,单位微秒。默认min_us=750
-- ``max_us`` -舵机PWM信号脉宽最小宽度,单位微秒。默认max_us=2250
-- ``actuation_range`` -舵机转动最大角度
-
-
-.. method:: Servo.write_us(width)
-
-发送设置脉冲宽度的PWM信号。
-
-    - ``width`` -脉冲宽度,单位微秒。
-
-.. method:: Servo.write_angle(angle)
-
-写舵机角度
-
-    - ``angle`` -舵机角度。
-
-
-::
-
-    from mpython import *
-
-    s=Servo(0)
-
-    while True:
-            for i in range(0,180,1):
-                    s.write_angle(i)
-                    sleep_ms(50)
-            for i in range(180,0,-1):
-                    s.write_angle(i)
-                    sleep_ms(50)
-
-
-.. class:: UI
-
-UI类
--------
-
-提供UI界面类控件
-
-.. class:: UI()
-
-构建UI对象。
-
-.. method:: UI.ProgressBar(x, y, width, height, progress)
-
-绘制进度条。
-
-    - ``x`` 、 ``y`` -左上角作为起点坐标
-    - ``width`` -进度条宽度
-    - ``height`` -进度条高度
-    - ``progress`` -进度条百分比
-
-::
-
-    from mpython import *
-
-    myUI=UI()
-    myUI.ProgressBar(30,30,70,8,60)
-    oled.show()
-
-.. method:: UI.stripBar(x, y, width, height, progress,dir=1,frame=1)
-
-绘制垂直或水平的柱状条
-
-    - ``x`` 、 ``y`` -左上角作为起点坐标
-    - ``width`` -柱状条宽度
-    - ``height`` -柱状条高度
-    - ``progress`` -柱状条百分比
-    - ``dir`` -柱状条方向。dir=1时水平方向,dir=0时,垂直方向。
-    - ``frame`` -当frame=1时,显示外框；当frame=0时,不显示外框。
-
-Clock类
-+++++
-
-提供模拟钟表显示功能
-
-.. class:: UI.Clock(x,y,radius)
-
-构建Clock对象。
-
-    - ``x`` 、``y`` -左上角作为起点坐标
-    - ``radius`` -钟表半径
-
-
-.. method:: UI.settime()
-
-获取本地时间并设置模拟钟表时间
-
-
-.. method:: UI.drawClock()
-
-绘制钟表
-
-.. method:: UI.clear()
-
-清除钟表
-
-::
-
-    from mpython import*
-    from machine import Timer
-    import time
-
-
-    clock=UI.Clock(64,32,30)
-
-    def Refresh():
-            clock.settime()
-            clock.drawClock()
-            oled.show()
-            clock.clear()
-    
-    tim1 = Timer(1)
-
-    tim1.init(period=1000, mode=Timer.PERIODIC, callback=lambda _:Refresh()) 
-
 .. _mpython.wifi:
 
 wifi类
@@ -553,7 +417,7 @@ wifi类
 
 断开wifi网络连接
 
-.. method:: wifi.enable_APWiFi(essid,channel)
+.. method:: wifi.enable_APWiFi(essid,channel=10)
 
 开启wifi的无线AP模式
 
@@ -563,35 +427,3 @@ wifi类
 .. method:: wifi.disable_APWiFi()
 
 关闭无线AP
-
-DHT11类
-------
-
-提供了dht11温湿度传感器读取相关的函数。
-
-构建对象
-~~~~~~~
-.. class:: DHT11(pin)
-
-创建一个与引脚pin相连的DHT22传感器对象。
-
-- ``pin``:引脚
-
-
-
-方法
-~~~~~~~
-
-.. method:: DHT11.humidity()
-
-读取并返回传感器的湿度值。 
-
-.. method:: DHT11.temperature()
-
-读取并返回传感器的温度值。  
-
-
-DHT22类
-------
-
-同DHT11类,此处不再重复。

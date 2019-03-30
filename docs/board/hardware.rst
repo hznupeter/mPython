@@ -24,7 +24,7 @@ mPython掌控是一块MicroPython微控制器板，很好的支持MicroPython/Py
 
   - 供电方式：Micro USB供电
   - 工作电压：3.3V
-  - 工作电流:100mA
+  - 最大工作电流:200mA
   - 掌控板载
 
     - 三轴加速度计MSA300,测量范围:±2G
@@ -38,19 +38,25 @@ mPython掌控是一块MicroPython微控制器板，很好的支持MicroPython/Py
 
   - 拓展接口
 
-    - 20通道数字I/O， (其中支持18路PWM，6路触摸输入)
-    - 5通道12bit模拟输入ADC，A0~A4  
+    - 20通道数字I/O， (其中支持12路PWM，6路触摸输入)
+    - 5通道12bit模拟输入ADC，P0~P4  
     - 1路的外部输入鳄鱼夹接口:EXT/GND
     - 支持I2C、UART、SPI通讯协议
 
+
+外观规格
+--------------
+
+.. image:: /images/掌控-规格图-20190218.png
+  :width: 800px
 
 元件布局
 --------------
 
 .. image:: /images/布局-正面.png
-
+  :width: 800px
 .. image:: /images/布局-背面.png
-
+  :width: 800px
 
 .. _mpython_pinout:
 
@@ -58,11 +64,13 @@ mPython掌控是一块MicroPython微控制器板，很好的支持MicroPython/Py
 --------------
 
 .. image:: /images/掌控板引脚定义-正面.png
+  :width: 800px
 
 .. image:: /images/掌控板引脚定义-背面.png
+  :width: 800px
 
 .. image:: /images/掌控板-pinout_wroom.png
-
+  :width: 800px
 
 .. _mPythonPindesc:
 
@@ -71,37 +79,37 @@ mPython掌控是一块MicroPython微控制器板，很好的支持MicroPython/Py
 
 
 
-=============  ====================================  
- 引脚          描述
-=============  ====================================
- P0            模拟/数字输入,模拟/数字输出,TouchPad
- P1            模拟/数字输入,模拟/数字输出,TouchPad 
- P2            模拟/数字输入
- P3            模拟输入,连接掌控板EXT鳄鱼夹,可连接阻性传感器
- P4            模拟输入,连接掌控板光线传感器  
- P5            数字输入,模拟/数字输出, 连接掌控板按键A
- P6            数字输入,模拟/数字输出, 连接掌控板蜂鸣器,不使用蜂鸣器时,可以作为数字IO使用
- P7            数字输入,模拟/数字输出, 连接掌控板RGB LED
- P8            数字输入,模拟/数字输出
- P9            数字输入,模拟/数字输出
- P10           模拟输入,连接掌控板声音传感器
- P11           数字输入,模拟/数字输出, 连接掌控板按键B
- P12           保留
- P13           数字输入,模拟/数字输出
- P14           数字输入,模拟/数字输出
- P15           数字输入,模拟/数字输出
- P16           数字输入,模拟/数字输出
- 3V3           电源正输入:连接USB时,掌控板内部稳压输出3.3V,未连接USB可以通过输入(2.7-3.6)V电压为掌控板供电
- P19           数字输入,模拟/数字输出，I2C总线SCL,与内部的OLED和加速度传感器共享I2C总线
- P20           数字输入,模拟/数字输出，I2C总线SDA,与内部的OLED和加速度传感器共享I2C总线
- GND           电源GND
- Touch_P(P23)  TouchPad,数字输入,模拟/数字输出       
- Touch_Y(P24)  TouchPad,数字输入,模拟/数字输出       
- Touch_T(P25)  TouchPad,数字输入,模拟/数字输出       
- Touch_H(P26)  TouchPad,数字输入,模拟/数字输出       
- Touch_O(P27)  TouchPad,数字输入,模拟/数字输出       
- Touch_N(P28)  TouchPad,数字输入,模拟/数字输出       
-=============  ====================================  
+=============== ======  ====================================  
+ 引脚            类型     描述
+=============== ======  ====================================
+ P0              I/O     模拟/数字输入,模拟/数字输出,TouchPad
+ P1              I/O     模拟/数字输入,模拟/数字输出,TouchPad 
+ P2               I      模拟/数字输入
+ P3               I      模拟输入,连接掌控板EXT鳄鱼夹,可连接阻性传感器
+ P4               I      模拟输入,连接掌控板光线传感器  
+ P5              I/O     数字输入,模拟/数字输出, 连接掌控板按键A,neopixel
+ P6              I/O     数字输入,模拟/数字输出, 连接掌控板蜂鸣器,不使用蜂鸣器时,可以作为数字IO使用,neopixel
+ P7              I/O     数字输入,模拟/数字输出, 连接掌控板RGB LED
+ P8              I/O     数字输入,模拟/数字输出,neopixel
+ P9              I/O     数字输入,模拟/数字输出,neopixel
+ P10              I      模拟输入,连接掌控板声音传感器
+ P11             I/O     数字输入,模拟/数字输出, 连接掌控板按键B,neopixel
+ P12             I/O     保留
+ P13             I/O     数字输入,模拟/数字输出,neopixel
+ P14             I/O     数字输入,模拟/数字输出,neopixel
+ P15             I/O     数字输入,模拟/数字输出,neopixel
+ P16             I/O     数字输入,模拟/数字输出,neopixel
+ 3V3             POWER   电源正输入:连接USB时,掌控板内部稳压输出3.3V,未连接USB可以通过输入(2.7-3.6)V电压为掌控板供电
+ P19             I/O     数字输入,模拟/数字输出，I2C总线SCL,与内部的OLED和加速度传感器共享I2C总线,neopixel
+ P20             I/O     数字输入,模拟/数字输出，I2C总线SDA,与内部的OLED和加速度传感器共享I2C总线,neopixel
+ GND             GND     电源GND
+ Touch_P(P23)    I/O     TouchPad
+ Touch_Y(P24)    I/O     TouchPad      
+ Touch_T(P25)    I/O     TouchPad
+ Touch_H(P26)    I/O     TouchPad
+ Touch_O(P27)    I/O     TouchPad  
+ Touch_N(P28)    I/O     TouchPad      
+=============== ======  ==================================== 
 
 
 相关下载
@@ -121,3 +129,7 @@ mPython掌控是一块MicroPython微控制器板，很好的支持MicroPython/Py
 * :download:`加速度计:MSA300 </../docs/hardware/MSA300-V1.0-ENG.pdf>`
 * :download:`OLED：128x64 </../docs/hardware/1.30-SPEC QG-2864KSWLG01 VER A.pdf>`
 
+外观规格图
++++++++
+
+* :download:`mPython掌控板外观规格图 </../docs/hardware/掌控-外观规格图20190218..rar>`
