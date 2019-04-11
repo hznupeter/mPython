@@ -26,7 +26,7 @@
 
 #define TAG "helix_decoder"
 
-#define MAINBUF_SIZE1 2880 //2880 //1940
+#define MAINBUF_SIZE1 1940 //2880 //1940
 extern TaskHandle_t http_client_task_handel;
 
 typedef struct{
@@ -176,10 +176,10 @@ static void mp3_decode(mp3_decode_t *decoder)
         decoder->supply_bytes = decoder->readPtr - decoder->readBuf; //需要补充的数据量
         if (errs != 0)
         {
-            renderer_zero_dma_buffer();
+            // renderer_zero_dma_buffer();
             if(decoder->supply_bytes == 0){
-                decoder->bytesleft -= 10;
-                decoder->readPtr += 10;
+                decoder->bytesleft -= 1;
+                decoder->readPtr += 1;
                 if(decoder->bytesleft <= 0)
                 {
                     decoder->bytesleft = 0;
@@ -214,7 +214,7 @@ static void mp3_decode(mp3_decode_t *decoder)
     }     
 }
 
-void mp3_decoder_task(void *pvParameters)
+void helix_mp3_decoder_task(void *pvParameters)
 {
     player_t *player = pvParameters;
     mp3_decode_t *decoder;

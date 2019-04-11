@@ -60,6 +60,7 @@ INC += -I$(BUILD)
 INC += -I$(TOP)/ports/esp32/codec/codec_lib/helix/include
 INC += -I$(TOP)/ports/esp32/codec/decoder/include
 INC += -I$(TOP)/ports/esp32/codec/include
+INC += -I$(TOP)/ports/esp32/codec/codec_lib/mad/include
 
 INC_ESPCOMP += -I$(ESPCOMP)/bootloader_support/include
 INC_ESPCOMP += -I$(ESPCOMP)/bootloader_support/include_bootloader
@@ -258,6 +259,19 @@ CODEC_SRC_C = $(addprefix codec/,\
 	codec_lib/helix/src/subband.c \
 	codec_lib/helix/src/trigtabs.c \
 	decoder/helix_mp3_decoder.c \
+	decoder/mad_mp3_decoder.c \
+	codec_lib/mad/align.c \
+	codec_lib/mad/bit.c \
+	codec_lib/mad/decoder.c \
+	codec_lib/mad/fixed.c \
+	codec_lib/mad/frame.c \
+	codec_lib/mad/huffman.c \
+	codec_lib/mad/layer3.c \
+	codec_lib/mad/layer12.c \
+	codec_lib/mad/stream.c \
+	codec_lib/mad/synth_stereo.c \
+	codec_lib/mad/timer.c \
+	codec_lib/mad/version.c \
 	)
 
 OBJ_MP =
